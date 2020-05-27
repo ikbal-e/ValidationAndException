@@ -8,40 +8,40 @@ namespace ValidationAndExceptionExamples.Test
     public class TryCatchException
     {
         [TestMethod]
-        public void TryCatchWithInvalidDate()
+        public void WithInvalidDate()
         {
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                Aciklama = "Deneme",
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(-33)
+                Description = "The answer, my friend, is blowin' in the wind",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(-33)
             };
 
-            Assert.ThrowsException<IzinTalepBaslangicBitistenIleriOlamazException>(() => IzinVer(izin));
+            Assert.ThrowsException<StartDateGreaterThanEndDateException>(() => Approve(request));
         }
 
-        public void IzinVer(IzinTalepDto izin)
+        public void Approve(TimeOffRequestDto request)
         {
-            if (izin.Aciklama is null) throw new ArgumentNullException(nameof(izin.Aciklama), "Alan boş bırakılamaz");
-            if (izin.IzinBaslangic > izin.IzinBitis) throw new IzinTalepBaslangicBitistenIleriOlamazException("İzin başlangıcı, bitiş tarihinden ileride olamaz");
+            if (request.Description is null) throw new ArgumentNullException(nameof(request.Description), "Description cannot be empty");
+            if (request.StartDate > request.EndDate) throw new StartDateGreaterThanEndDateException("Start date cannot be greater than the end date");
         }
 
         [TestMethod]
-        public void TryCatchWithInvalidAciklama()
+        public void WithInvalidDescription()
         {
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(4)
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(4)
             };
 
             try
             {
-                IzinVer(izin);
+                Approve(request);
             }
             catch(ArgumentNullException exp)
             {
-                Assert.AreEqual("Alan boş bırakılamaz\r\nParametre adı: Aciklama", exp.Message);
+                Assert.IsTrue(exp.Message.Contains("Description cannot be empty"));
             }
         }
     }

@@ -79,23 +79,23 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAnnotation\IzinTalepDto.cs" />
-    <Compile Include="ExceptionAOP\IzinTalepDto.cs" />
-    <Compile Include="ExceptionAOP\IzinTalepBaslangicBitistenIleriOlamazException.cs" />
-    <Compile Include="ExceptionAOP\IzinTalepExceptionAspectAttribute.cs" />
+    <Compile Include="DataAnnotation\TimeOffRequestDto.cs" />
+    <Compile Include="ExceptionAOP\TimeOffRequestDto.cs" />
+    <Compile Include="ExceptionAOP\StartDateGreaterThanEndDateException.cs" />
+    <Compile Include="ExceptionAOP\TimeOffRequestExceptionAspectAttribute.cs" />
     <Compile Include="FluentValidation\FluentValidationExtensions.cs" />
-    <Compile Include="FluentValidation\IzinTalepDto.cs" />
-    <Compile Include="FluentValidation\IzinTalepDtoValidator.cs" />
+    <Compile Include="FluentValidation\TimeOffRequestDto.cs" />
+    <Compile Include="FluentValidation\TimeOffRequestDtoValidator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="IsValidInObject\IzinTalepDto.cs" />
-    <Compile Include="IValidatable\IzinTalepDto.cs" />
+    <Compile Include="IsValidInObject\TimeOffRequestDto.cs" />
+    <Compile Include="IValidatable\TimeOffRequestDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ResultClass\IzinTalepDto.cs" />
+    <Compile Include="ResultClass\TimeOffRequestDto.cs" />
     <Compile Include="ResultClass\Result.cs" />
-    <Compile Include="TryCatchException\IzinTalepBaslangicBitistenIleriOlamazException.cs" />
-    <Compile Include="TryCatchException\IzinTalepDto.cs" />
+    <Compile Include="TryCatchException\StartDateGreaterThanEndDateException.cs" />
+    <Compile Include="TryCatchException\TimeOffRequestDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

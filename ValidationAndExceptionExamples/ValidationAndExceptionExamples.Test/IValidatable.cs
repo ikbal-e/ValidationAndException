@@ -13,48 +13,46 @@ namespace ValidationAndExceptionExamples.Test
         [TestMethod]
         public void WithInvalidObject()
         {
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                Aciklama = "deneme",
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(-5)
+                Description = "Example text",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(-5)
             };
 
-            ValidationContext vcx = new ValidationContext(izin);
+            ValidationContext vcx = new ValidationContext(request);
             var results = new List<ValidationResult>();
 
-            bool isValid = Validator.TryValidateObject(izin, vcx, results, true);
+            bool isValid = Validator.TryValidateObject(request, vcx, results, true);
             
             Assert.IsFalse(isValid);
 
-            Assert.IsTrue(results.Select(x => x.ErrorMessage).Contains("İzin başlangıç tarihi bitiş tarihinden büyük olamaz"));
-
+            Assert.IsTrue(results.Select(x => x.ErrorMessage).Contains("Start date cannot be greater than the end date"));
         }
 
         [TestMethod]
-        public void WithNullAciklama()
+        public void WithNullDescription()
         {
-            // Aciklama alanı null olduğu için diğer hatalar ignore ediliyor, 
             // Priority = [Required] -> Other attributes -> IValidatableObject Implementation
 
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(-5)
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(-5)
             };
 
-            ValidationContext vcx = new ValidationContext(izin);
+            ValidationContext vcx = new ValidationContext(request);
             var results = new List<ValidationResult>();
 
-            bool isValid = Validator.TryValidateObject(izin, vcx, results, true);
+            bool isValid = Validator.TryValidateObject(request, vcx, results, true);
 
             Assert.IsFalse(isValid);
 
             Assert.IsTrue(results.Count == 1);
 
-            Assert.IsFalse(results.Select(x => x.ErrorMessage).Contains("İzin başlangıç tarihi bitiş tarihinden büyük olamaz"));
-            Assert.IsTrue(results.Select(x => x.ErrorMessage).Contains("Aciklama alanı gereklidir."));
+            Assert.IsFalse(results.Select(x => x.ErrorMessage).Contains("Start date cannot be greater than the end date"));
 
+            //Assert.IsTrue(results.Select(x => x.ErrorMessage).Contains("Description is required.")); //Error message depends on local language
         }
     }
 }

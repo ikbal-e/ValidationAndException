@@ -9,8 +9,8 @@ namespace ValidationAndExceptionExamples.FluentValidation
 {
     public static class FluentValidationExtensions
     {
-        //Bu işlemi zaten ToString yapıyormuş ValitationResult'da
-        public static string HataMesajiniGetir(this ValidationResult validationResult, string seperator = ",")
+        //Does the same thing with ToString() extension method
+        public static string GetMessage(this ValidationResult validationResult, string seperator = ",")
         {
             return string.Join(seperator + " ", validationResult.Errors.Select(x => x.ErrorMessage));
         }

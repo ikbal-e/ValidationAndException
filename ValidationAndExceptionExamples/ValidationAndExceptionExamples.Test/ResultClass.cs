@@ -9,79 +9,79 @@ namespace ValidationAndExceptionExamples.Test
     public class ResultClass
     {
         [TestMethod]
-        public void TestIzinResultClassWithValidObject()
+        public void WithValidObject()
         {
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                Aciklama = "Deneme",
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(3)
+                Description = "Example",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(3)
             };
 
-            Assert.IsTrue(IzinVer(izin).Success);
+            Assert.IsTrue(Approve(request).Success);
         }
 
         [TestMethod]
-        public void IzinResultWithInvalidAciklama()
+        public void WithInvalidDescription()
         {
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(3)
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(3)
             };
 
-            var izinResult = IzinVer(izin);
+            var requestReponse = Approve(request);
 
-            Assert.IsTrue(izinResult.Failure);
-            Assert.AreEqual("Açıklama boş olamaz", izinResult.Error);
+            Assert.IsTrue(requestReponse.Failure);
+            Assert.AreEqual("Description cannot be empty", requestReponse.Error);
         }
 
-        public Result IzinVer(IzinTalepDto izin)
+        public Result Approve(TimeOffRequestDto request)
         {
-            if (izin.Aciklama == null) return Result.Fail("Açıklama boş olamaz");
-            if (izin.IzinBaslangic > izin.IzinBitis) return Result.Fail("İzin başlangıcı, bitiş tarihinden ileride olamaz");
+            if (request.Description == null) return Result.Fail("Description cannot be empty");
+            if (request.StartDate > request.EndDate) return Result.Fail("Start date cannot be greater than the end date");
 
             return Result.Ok();
         }
 
         [TestMethod]
-        public void GenericResultClassTestWithInvalidAciklama()
+        public void GenericWithInvalidDescription()
         {
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(3)
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(3)
             };
 
-            var izinResult = IzinVerWithGenericResult(izin);
+            var reponse = ApproveWithGenericResult(request);
 
-            Assert.IsTrue(izinResult.Failure);
-            Assert.AreEqual("Açıklama boş olamaz", izinResult.Error);
+            Assert.IsTrue(reponse.Failure);
+            Assert.AreEqual("Description cannot be empty", reponse.Error);
         }
 
         [TestMethod]
-        public void GenericResultClassTestWithValidObject()
+        public void GenericResultWithValidObject()
         {
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                Aciklama = "Deneme",
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(3)
+                Description = "Example text",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(3)
             };
 
-            var izinResult = IzinVerWithGenericResult(izin);
+            var reponse = ApproveWithGenericResult(request);
             
-            Assert.IsTrue(izinResult.Success);
-            Assert.AreEqual(izin.Aciklama, izinResult.Value.Aciklama);
-            Assert.AreEqual(null, izinResult.Error);
+            Assert.IsTrue(reponse.Success);
+            Assert.AreEqual(request.Description, reponse.Value.Description);
+            Assert.AreEqual(null, reponse.Error);
         }
 
-        public Result<IzinTalepDto> IzinVerWithGenericResult(IzinTalepDto izin)
+        public Result<TimeOffRequestDto> ApproveWithGenericResult(TimeOffRequestDto request)
         {
-            if (izin.Aciklama == null) return Result<IzinTalepDto>.Fail(izin, "Açıklama boş olamaz");
-            if (izin.IzinBaslangic > izin.IzinBitis) return Result<IzinTalepDto>.Fail(izin, "İzin başlangıcı, bitiş tarihinden ileride olamaz");
+            if (request.Description == null) return Result<TimeOffRequestDto>.Fail(request, "Description cannot be empty");
+            if (request.StartDate > request.EndDate) return Result<TimeOffRequestDto>.Fail(request, "Start date cannot be greater than the end date");
 
-            return Result<IzinTalepDto>.Ok(izin);
+            return Result<TimeOffRequestDto>.Ok(request);
         }
     }
 }

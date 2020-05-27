@@ -7,18 +7,17 @@ using System.Web;
 namespace ValidationAndExceptionExamples.ExceptionAOP
 {
     [Serializable]
-    public class IzinTalepExceptionAspectAttribute : OnExceptionAspect
+    public class TimeOffRequestExceptionAspectAttribute : OnExceptionAspect
     {
         public override void OnException(MethodExecutionArgs args)
         {
-            if (args.Exception.GetType().Equals(typeof(IzinTalepBaslangicBitistenIleriOlamazException)))
+            if (args.Exception.GetType().Equals(typeof(StartDateGreaterThanEndDateException)))
             {
-                Console.WriteLine("Başlangıç tarihi bitiş tarihinden ileri bir tarihte olamaz");
+                Console.WriteLine("End date cannot be greater than the start date");
                 args.FlowBehavior = FlowBehavior.Continue;
             }
             else
-                base.OnException(args);
-            
+                base.OnException(args);  
         }
     }
 }

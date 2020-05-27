@@ -8,24 +8,25 @@ namespace ValidationAndExceptionExamples.Test
     public class ExceptionAOP
     {
         [TestMethod]
-        public void ExceptionAOPTest()
+        public void ExceptionAOPTestWithInvalidObject()
         {
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                Aciklama = "Deneme",
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(-3)
+                Description = "Lorem ipsum cogito ergo sum and other stuff",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(-3)
             };
 
-            Assert.IsFalse(IzinVer(izin));
+            Assert.IsFalse(Approve(request));
 
-            //Assert.ThrowsException<IzinTalepBaslangicBitistenIleriOlamazException>(() => IzinVer(izin)); Bu test geçmeyecek çünkü exception yakalanıyor
+            //This assert will fail
+            //Assert.ThrowsException<StartDateGreaterThanEndDateException>(() => Approve(request));
         }
 
-        [IzinTalepExceptionAspect]
-        public bool IzinVer(IzinTalepDto izin)
+        [TimeOffRequestExceptionAspect]
+        public bool Approve(TimeOffRequestDto request)
         {
-            if (izin.IzinBaslangic > izin.IzinBitis) throw new IzinTalepBaslangicBitistenIleriOlamazException("İzin başlangıcı, bitiş tarihinden ileride olamaz");
+            if (request.StartDate > request.EndDate) throw new StartDateGreaterThanEndDateException("Start date cannot be greater than end date");
 
             return true;
         }
@@ -33,14 +34,14 @@ namespace ValidationAndExceptionExamples.Test
         [TestMethod]
         public void ExceptionAOPTestWithValidObject()
         {
-            var izin = new IzinTalepDto
+            var request = new TimeOffRequestDto
             {
-                Aciklama = "Deneme",
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(5)
+                Description = "Legit description",
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5)
             };
 
-            Assert.IsTrue(IzinVer(izin));
+            Assert.IsTrue(Approve(request));
         }
     }
 }

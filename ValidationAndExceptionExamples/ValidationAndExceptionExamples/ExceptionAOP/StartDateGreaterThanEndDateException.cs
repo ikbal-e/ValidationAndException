@@ -6,9 +6,9 @@ using System.Web;
 namespace ValidationAndExceptionExamples.ExceptionAOP
 {
     [Serializable]
-    public class IzinTalepBaslangicBitistenIleriOlamazException : Exception
+    public class StartDateGreaterThanEndDateException : Exception
     {
-        public IzinTalepBaslangicBitistenIleriOlamazException(string message) : base(message)
+        public StartDateGreaterThanEndDateException(string message) : base(message)
         {
         }
     }

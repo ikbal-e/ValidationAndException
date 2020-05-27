@@ -11,17 +11,17 @@ namespace ValidationAndExceptionExamples.Test
         [TestMethod]
         public void IsValidInObjectTest()
         {
-            var izin = new IzinTalepDto
+            var reqeust = new TimeOffRequestDto
             {
-                IzinBaslangic = DateTime.Now,
-                IzinBitis = DateTime.Now.AddDays(-5)
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(-5)
             };
 
-            var errors = izin.IsValid();
+            var errors = reqeust.IsValid();
 
             Assert.IsTrue(errors.Any());
 
-            Assert.IsTrue(errors.Contains("İzin başlangıç tarihi bitiş tarihinden büyük olamaz"));
+            Assert.IsTrue(errors.Contains("Start date cannot be greater than the end date"));
         }
     }
 }
